@@ -17,6 +17,7 @@ p{color:#a3a3ad}.top{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:24px
 .btn{display:inline-block;margin:10px 8px 0 0;border-radius:99px;padding:9px 15px;background:#fff;color:#08080b;text-decoration:none;font-size:12px;font-weight:600}
 .note{margin:22px 0;padding:14px 16px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:#101016;font-size:12.5px}
 h2{margin:28px 0 8px;font-size:19px}
+ol{color:#a3a3ad;font-size:12.5px;padding-left:22px}ol li{margin-bottom:8px}
 pre{margin:8px 0;padding:12px 14px;overflow-x:auto;border:1px solid rgba(255,255,255,.14);border-radius:9px;background:#0a0a10;font:11px/1.7 ui-monospace,monospace;color:#d6d6de}
 code{font-family:ui-monospace,monospace;background:rgba(255,255,255,.06);border-radius:4px;padding:1px 4px;color:#fff}
 footer{margin-top:30px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:12px}
@@ -36,7 +37,17 @@ footer{margin-top:30px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1
   <a class="btn" href="https://github.com/wwebsitesystem-stack/textnexus-self-host/archive/refs/heads/main.zip">Download the kit</a>
   <a class="btn" href="https://textnexus.me/self-host.html">Read the full guide</a>
 </section>
-<div class="note"><b>This repository is the kit, not the website.</b> The site files stay in the private TextNexus source. Copy the <code>Self hosting</code> folder into the root of your copy of those files, then run the commands below.</div>
+<div class="note"><b>This repository is the kit, not the website.</b> The site files stay in the private TextNexus source. Copy the <code>Self hosting</code> folder into the root of your copy of those files, then follow the steps.</div>
+<h2>The seven steps</h2>
+<ol>
+  <li><b>Get the kit.</b> Clone this repository or download the ZIP, then copy <code>Self hosting</code> into the root of your TextNexus site files.</li>
+  <li><b>Start it.</b> From the site root run <code>docker compose -f "Self hosting/docker-compose.yml" up -d --build</code>. Plain nginx uses <code>Self hosting/nginx.conf</code>.</li>
+  <li><b>Open it.</b> Go to <b>http://localhost:8080</b>. From another machine use the server address and allow port 8080.</li>
+  <li><b>Publish the Firebase rules.</b> Paste <code>database.rules.json</code> into Realtime Database → Rules and press Publish, or run <code>firebase deploy --only database --project nexus-web-development-official</code>.</li>
+  <li><b>Allow sign-in.</b> Add <code>localhost</code> and your domain under Firebase Authentication → Settings → Authorized domains.</li>
+  <li><b>Add a domain and HTTPS.</b> Proxy a TLS-terminating server to <code>127.0.0.1:8080</code> with Caddy, nginx and certbot, or a Cloudflare Tunnel. Add the hostname to Firebase's authorized domains.</li>
+  <li><b>Update.</b> Pull the site changes and run <code>docker compose -f "Self hosting/docker-compose.yml" up -d --build</code> again. Check that the workspace loads, Google sign-in returns to your domain, and <code>https://</code> shows the padlock.</li>
+</ol>
 <h2>Quick start</h2>
 <pre><code># 1. from the site root, with the Self hosting folder in place
 docker compose -f "Self hosting/docker-compose.yml" up -d --build
