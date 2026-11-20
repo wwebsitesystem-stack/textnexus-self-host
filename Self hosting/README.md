@@ -34,8 +34,9 @@ docker compose -f "Self hosting/docker-compose.yml" up -d --build
 Then open <http://localhost:8080>.
 
 The image is built from the site root, because the site files sit one level above
-this folder. Only the files the site actually serves are copied in, so
-documentation, archives and this folder never reach the final image.
+this folder. It copies the pages and their assets — HTML, CSS, JavaScript, JSON,
+images, `media/`, `games/` and `ghostlink-games/` — while documentation,
+Cloudflare Functions, build output and this folder stay out.
 
 Stop it with:
 
@@ -49,12 +50,8 @@ Copy the site files and the server block into place:
 
 ```bash
 sudo mkdir -p /var/www/textnexus
-sudo cp index.html 404.html home.html updates.html ghostlink.html TextNexus.html \
-        self-host.html feedback.html admin.html owner.html creator.html settings.html \
-        games.html notifications.html suggestions.html email-manager.html jeoweb.html \
-        secret1.html nexus_maintenance.html system_analytics_health.html \
-        nexus_admin_control_center.html Style.css logo.svg sw.js app.js \
-        bareworker.js robots.txt sitemap.xml site.webmanifest /var/www/textnexus/
+sudo cp -R *.html *.css *.js *.json *.svg *.png *.webmanifest *.xml *.txt \
+        media games ghostlink-games /var/www/textnexus/
 sudo cp "Self hosting/nginx.conf" /etc/nginx/sites-available/textnexus
 sudo ln -s /etc/nginx/sites-available/textnexus /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
@@ -100,6 +97,13 @@ Also make sure, in the Firebase Console:
   site from (for example `localhost` during testing, or your domain).
 - If the Google OAuth consent screen is in Testing, add test accounts under
   Audience → Test users, or publish the app.
+
+## Cloudflare Functions
+
+Cloudflare Pages also runs `functions/api/` for the feedback and registration
+forms. The static image does not execute them, so `/api/*` returns 404 on a
+self-hosted copy; the Firebase-backed pages still work. Host the Functions
+separately if you need those forms.
 
 ## AI with Lofin.dev
 
