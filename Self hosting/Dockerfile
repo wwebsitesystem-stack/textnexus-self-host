@@ -12,38 +12,15 @@ LABEL org.opencontainers.image.title="TextNexus" \
 
 WORKDIR /usr/share/nginx/html
 
-# Copy only the files the site actually serves, so build output, docs and this
-# folder never end up in the image.
-COPY \
-    index.html \
-    404.html \
-    home.html \
-    updates.html \
-    ghostlink.html \
-    TextNexus.html \
-    feedback.html \
-    admin.html \
-    owner.html \
-    creator.html \
-    self-host.html \
-    settings.html \
-    notifications.html \
-    suggestions.html \
-    signup.html \
-    email-manager.html \
-    jeoweb.html \
-    secret1.html \
-    nexus_maintenance.html \
-    system_analytics_health.html \
-    nexus_admin_control_center.html \
-    Style.css \
-    logo.svg \
-    og-image.png \
-    sw.js \
-    app.js \
-    bareworker.js \
-    database.rules.json \
-    ./
+# Copy the served pages and their assets. Globs keep new top-level pages,
+# scripts and styles working without editing this list on every deploy; media
+# and games are copied as directories because their pages reference them.
+# Build output, documentation, Cloudflare Functions and this folder stay out.
+COPY *.html ./
+COPY *.css *.js *.json *.svg *.png *.webmanifest *.xml *.txt ./
+COPY media ./media
+COPY games ./games
+COPY ghostlink-games ./ghostlink-games
 
 COPY ["Self hosting/nginx.conf", "/etc/nginx/conf.d/default.conf"]
 

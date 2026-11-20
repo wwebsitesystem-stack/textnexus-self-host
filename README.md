@@ -36,7 +36,7 @@ Full steps, screenshots and troubleshooting: [textnexus.me/self-host.html](https
 
 ## The one-page guide
 
-`index.html` carries the whole walkthrough in one file: requirements, seven steps, every command, the nginx alternative, updates, final checks and the four common failures. Open it locally, or read the hosted version above.
+`index.html` carries the whole walkthrough in one file: requirements, seven steps, every command, the nginx alternative, updates, final checks and the five common failures. Open it locally, or read the hosted version above.
 
 ## License
 
